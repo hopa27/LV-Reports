@@ -10,9 +10,16 @@ import {
   type Report,
 } from "../data/reports";
 
-export default function ReportingSystemPanel() {
+type ReportingSystemPanelProps = {
+  systemName: string;
+  onSystemNameChange: (name: string) => void;
+};
+
+export default function ReportingSystemPanel({
+  systemName,
+  onSystemNameChange,
+}: ReportingSystemPanelProps) {
   const initial = getSystemState(DEFAULT_SYSTEM);
-  const [systemName, setSystemName] = useState<string>(DEFAULT_SYSTEM);
   const [reports, setReports] = useState<Report[]>(initial.reports);
   const [startDate, setStartDate] = useState<string>(initial.startDate);
   const [endDate, setEndDate] = useState<string>(initial.endDate);
@@ -27,7 +34,7 @@ export default function ReportingSystemPanel() {
 
   function handleSystemChange(name: string) {
     const state = getSystemState(name);
-    setSystemName(name);
+    onSystemNameChange(name);
     setReports(state.reports);
     setStartDate(state.startDate);
     setEndDate(state.endDate);
@@ -42,9 +49,6 @@ export default function ReportingSystemPanel() {
 
   return (
     <div className="lve-panel bg-white w-[1080px] max-w-full flex flex-col">
-      {/* [A] Panel header */}
-      <div className="lve-panel-header">{systemName} Reporting System</div>
-
       {/* [B] Panel body */}
       <div className="lve-panel-body flex flex-col gap-4">
         {/* [B1] Top toolbar */}
