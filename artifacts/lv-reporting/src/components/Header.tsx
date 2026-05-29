@@ -1,7 +1,9 @@
+import lvLogo from "@assets/image_1780040378461.png";
+
 export default function Header() {
   return (
     <header className="bg-[#00263e] text-white h-[52px] px-[142px] flex items-center justify-between shrink-0">
-      <div className="font-['Livvic'] font-bold text-[24px] tracking-tight">LV=</div>
+      <img src={lvLogo} alt="LV=" className="h-[28px] w-auto" />
       <div className="flex items-center gap-4">
         <a
           href="#"
