@@ -1,0 +1,330 @@
+Build a standalone React + Vite + TypeScript + TailwindCSS v4 single-page application
+called "LV= Reporting System" that recreates the DANAD96 Reporting System screen from
+the LV= CLANAD legacy application, styled with the LVE Component Library design system.
+No backend. All data is hard-coded. Static deployment only.
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. FONTS & ICON LIBRARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Google Fonts: Livvic (headers, labels, buttons, column headers) + Mulish (body, inputs, list rows)
+- Icons: react-icons/md ONLY — no other icon libraries.
+  Icons used:
+    MdClose, MdPrint, MdSearch, MdKeyboardArrowDown,
+    MdError, MdCheck, MdWarning
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. LVE DESIGN SYSTEM TOKENS (set as CSS custom properties / Tailwind theme)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Primary:       #006cf4
+Hover:         #003578
+Navy (header): #00263e
+Dark Navy:     #002f5c
+Link Blue:     #005a9c
+Secondary:     #04589b
+Highlight:     #05579B
+Green (focus): #178830
+Error:         #d72714
+Tab Inactive:  #eaf5f8
+Page bg:       #f0f0f0
+Border gray:   #BBBBBB
+Row divider:   #e3e6ea
+Label text:    #0d2c41
+Body text:     #3d3d3d
+Border radius — pill: 30px, input/panel: 8px
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. REUSABLE CSS CLASSES (define in index.css)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.lve-panel          — border border-[#BBBBBB] rounded-[8px] shadow-md
+.lve-panel-header   — bg-[#00263e] text-white font-['Livvic'] font-semibold
+                      text-[15px] px-4 py-2.5 rounded-t-[8px]
+.lve-panel-body     — px-4 py-4
+.lve-input          — h-[34px] border border-[#BBBBBB] rounded-[8px] px-3
+                      font-['Mulish'] text-[14px] text-[#3d3d3d] bg-white
+                      focus:outline-none focus:border-[#178830] w-full
+.lve-label          — font-['Livvic'] font-semibold text-[13px] text-[#0d2c41]
+                      mb-1 block
+.lve-btn            — inline-flex items-center gap-1.5 px-4 h-[34px]
+                      bg-[#006cf4] hover:bg-[#003578] text-white rounded-[30px]
+                      font-['Livvic'] font-semibold text-[13px] transition-colors
+                      cursor-pointer border-0
+.lve-btn-secondary  — bg-white text-[#006cf4] border border-[#006cf4]
+                      hover:bg-[#eaf5f8]
+.lve-btn-sm         — h-[30px] px-3 text-[12px]
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. PAGE SHELL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The app renders a full-screen shell (min-h-screen flex flex-col bg-[#f0f0f0]):
+ 
+  <Header>
+    Navy bar (#00263e), full width.
+    Left: LV= logo (white text "LV=" in bold, or use a placeholder).
+    Right: "Logout" link + vertical divider + page title "Reporting System".
+    Height: ~52px, px-[142px].
+ 
+  <main className="flex-1 px-[142px] py-8 flex items-start justify-center">
+    The ReportingSystemPanel (see section 5) is rendered directly here,
+    NOT as a modal/overlay — it is the main content of the page.
+    Panel width: 1080px, max-width: 100%.
+ 
+  <Footer>
+    White bar, sticks to bottom (mt-auto).
+    Left: LV= logo text + address: "County Gates, Bournemouth, BH1 2NF".
+    Height: ~44px, px-[142px].
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. REPORTING SYSTEM PANEL — LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Panel: lve-panel bg-white w-[1080px] flex flex-col (no max-h — page scrolls naturally).
+ 
+  [A] Panel header bar (lve-panel-header)
+      Text: "{systemName} Reporting System"   (dynamic — updates when system changes)
+      No close button (standalone page, not a modal).
+ 
+  [B] Panel body (lve-panel-body, flex flex-col gap-4)
+ 
+    [B1] Top toolbar row — flex flex-wrap items-end gap-4
+      • System Name dropdown (custom — see section 6), width 200px, labelled "System Name"
+      • Start Date DatePicker (see section 7), width 200px, labelled "Start Date"
+      • End Date DatePicker (see section 7), width 200px, labelled "End Date"
+      • Print button (ml-auto) — lve-btn lve-btn-sm, MdPrint icon + "Print" text
+        → clicking Print triggers the Print Error popup (see section 9A)
+ 
+    [B2] "Print to my default printer" checkbox
+      inline-flex items-center gap-2, Mulish 14px #3d3d3d
+      Checkbox: w-4 h-4 accent-[#006cf4]
+      Default: unchecked
+ 
+    [B3] Reports table
+      Outer: border border-[#BBBBBB] rounded-[8px] overflow-hidden flex flex-col
+             min-h-[340px]
+ 
+      Column header row: grid grid-cols-[1fr_160px]
+        bg-[#eaf5f8], Livvic semibold 13px #0d2c41, border-b border-[#BBBBBB]
+        Col 1: "ReportName" — px-4 py-2 border-r border-[#BBBBBB]
+        Col 2: "DateRequired" — px-4 py-2
+ 
+      Data rows (overflow-auto, Mulish 14px #3d3d3d):
+        Each row: grid grid-cols-[1fr_160px] cursor-pointer border-b border-[#e3e6ea]
+        Selected row: bg-[#006cf4] text-white; border-r becomes border-[#003578]
+        Hover (non-selected): bg-[#eaf5f8]
+        Click → select that row
+        If visibleReports is empty (system not in Oracle) → show no rows, table still renders
+ 
+    [B4] Footer row — flex items-center gap-2
+      • Report path input: lve-input flex-1 bg-[#fafafa] cursor-default readOnly
+        Value = selected report's path field (empty string if no path)
+      • Find button: lve-btn lve-btn-secondary lve-btn-sm, MdSearch icon + "Find" text
+        disabled (always), opacity-40 cursor-not-allowed
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. SystemNameSelect COMPONENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Custom dropdown (NOT a native <select>).
+Trigger button: lve-input pr-12 text-left flex items-center, width 200px
+  Shows selected value (truncated).
+  Right side: vertical divider line (#BBBBBB) + MdKeyboardArrowDown (22px, #006cf4)
+  pointer-events-none on the chevron overlay.
+Dropdown list (open state):
+  absolute left-0 top-full mt-1 z-30
+  w-full max-h-[180px] overflow-auto
+  bg-white border border-[#BBBBBB] rounded-[8px] shadow-lg
+  Mulish 14px #3d3d3d
+  Each item: px-3 py-1.5 cursor-pointer
+    Selected: bg-[#006cf4] text-white
+    Hover: bg-[#eaf5f8]
+Click outside closes the dropdown (mousedown listener on document).
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. DatePicker COMPONENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+A date input that:
+- Displays the current value as a string (dd/MM/yyyy format).
+- When clicked, opens a calendar popup (month/year nav, day grid).
+- Selected date rendered in the input field formatted as dd/MM/yyyy using date-fns format().
+- Uses MdKeyboardArrowDown chevron on the right (same style as SystemNameSelect).
+- Accepts props: value (string dd/MM/yyyy), placeholder (string),
+  disabled (boolean), onChange (d: Date | null) => void.
+- When disabled=false the picker is fully interactive.
+- Calendar popup appears below the input (absolute positioned).
+  Month/year header with prev/next arrows.
+  Day grid 7 columns (Mon–Sun headers).
+  Selected day: bg-[#006cf4] text-white rounded-full.
+  Today: border border-[#006cf4] rounded-full.
+  Click day → call onChange(date), close popup.
+- install date-fns for date formatting.
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. DATA — SYSTEM NAMES & REPORT LISTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SYSTEM_NAMES (dropdown options, in this order):
+  "CCRP", "CHEQUE REQUISITION", "DANAD96", "FINANCE", "GENERAL",
+  "HIPPS97", "IFA SALES", "ILA REPORTS", "MARKETING",
+  "MORTGAGE ANNUIT(Admin)", "MORTGAGE ANNUIT(NB)", "NUANAD",
+  "PC96", "PLI ADMIN", "PROPSALE97", "SALES95"
+ 
+Default selected system: "DANAD96"
+Default Start Date:       "06/06/2017"
+Default End Date:         "17/04/2017"
+ 
+Report lists (each entry: { name: string; dateRequired: string; path?: string }):
+ 
+DANAD96 (default — shown for any system not explicitly listed below):
+  { name: "Anniversary Date Check",                                      dateRequired: "S",  path: "\\\\delphiuat\\uat\\anad96\\reports\\32setlive.rpt" },
+  { name: "Annuities Time From Application To Completion",               dateRequired: "B" },
+  { name: "Annuity Activity Report",                                     dateRequired: "" },
+  { name: "Annuity Applications",                                        dateRequired: "B" },
+  { name: "Annuity Completions",                                         dateRequired: "B" },
+  { name: "Annuity Completions by BACS",                                 dateRequired: "B" },
+  { name: "Annuity Completions by BACS - Summary",                       dateRequired: "B" },
+  { name: "Annuity pipeline report",                                     dateRequired: "" },
+  { name: "Annuity pipeline summary report",                             dateRequired: "" },
+  { name: "Annuity Receipts & Tax Free Cash Report",                     dateRequired: "B" },
+  { name: "BACS cases with blank bank details",                          dateRequired: "" },
+  { name: "Business from IFA",                                           dateRequired: "" },
+  { name: "Commissions in and out",                                      dateRequired: "B" },
+  { name: "Death Comparison CLANAD Report",                              dateRequired: "" },
+  { name: "Detailed Turnaround Time Annuity Quotes",                     dateRequired: "B" },
+  { name: "Diary Report",                                                dateRequired: "" },
+  { name: "ICFP - Cancelled Policies",                                   dateRequired: "" },
+  { name: "ICFP - Hospitalised Policies",                                dateRequired: "" },
+  { name: "IFA COMMISSION RETURN REPORT",                                dateRequired: "B" },
+  { name: "IFA Portfolio cases",                                         dateRequired: "B" },
+  { name: "IFA Portfolio cases - For Portfolio",                         dateRequired: "B" },
+  { name: "Monthly Premiums Allocated (Completed Cases)",                dateRequired: "B" },
+  { name: "Monthly Premiums allocated report",                           dateRequired: "B" },
+  { name: "New Application Quote check report",                          dateRequired: "" },
+  { name: "Next Payment date Check",                                     dateRequired: "S" },
+  { name: "Northern Ireland Addresses Policies for NSO",                 dateRequired: "" },
+  { name: "NOT IN FORCE ANNUITIES",                                      dateRequired: "S" },
+  { name: "NOT IN FORCE ANNUITIES WITHOUT A NOT IN FORCE DATE",          dateRequired: "S" },
+  { name: "Note Log Report",                                             dateRequired: "B" },
+  { name: "Overseas Annuity Clients for Proof of Existence Check",       dateRequired: "" },
+  { name: "Payment Frequency and Escalation",                            dateRequired: "" },
+  { name: "Polices Suspended",                                           dateRequired: "" },
+  { name: "Policies Due For Renewal",                                    dateRequired: "B",  path: "\\\\delphiuat\\uat\\anad96\\reports\\Renewals.rpt" },
+  { name: "Premiums Unallocated Report",                                 dateRequired: "" },
+  { name: "Scottish Addresses Policies for NSO",                         dateRequired: "" },
+  { name: "Smokers Applications",                                        dateRequired: "B" },
+  { name: "Summary Turnaround Time Annuity Quotes",                      dateRequired: "B" },
+  { name: "Tax Code Changes Since Last Pay Date",                        dateRequired: "B" },
+  { name: "Tax Refunds received",                                        dateRequired: "B" },
+  { name: "Withdrawals & Cancellations",                                 dateRequired: "B",  path: "\\\\delphiuat\\uat\\anad96\\reports\\Withdrawls & Cancelations.rpt" },
+ 
+NUANAD reports (startDate "25/09/2016", endDate "29/09/2016"):
+  { name: "ABI STATS",                                 dateRequired: "B", path: "JOHNS-043" },
+  { name: "ANNUITY COMPLETIONS (ADMIN PRINTER)",       dateRequired: "B" },
+  { name: "ANNUITY LIST (POLAD001)",                   dateRequired: "B" },
+  { name: "BACS PAYMENTS CURRENT MONTH",               dateRequired: "" },
+  { name: "CHEQUE PAYMENTS CURRENT MONTH",             dateRequired: "" },
+  { name: "COMPLETED MAR REPORT",                      dateRequired: "B" },
+  { name: "DEATHS & CLOSURES REPORT",                  dateRequired: "B" },
+  { name: "DEATHS & CLOSURES REPORT (MK2)",            dateRequired: "B" },
+  { name: "DIARY REPORT",                              dateRequired: "" },
+  { name: "JOURNAL LISTING",                           dateRequired: "" },
+  { name: "NEW BUSINESS (POLAD002)",                   dateRequired: "B" },
+  { name: "NON MONTHLY INSTALMENTS",                   dateRequired: "B" },
+  { name: "P60 SUMMARY",                               dateRequired: "" },
+  { name: "RENEWALS SCHEDULES (ADVANCE)",              dateRequired: "B" },
+  { name: "RENEWALS SCHEDULES (ARREARS)",              dateRequired: "B" },
+  { name: "STANDARD NON REASSURED ANNUITY PAYMENTS",  dateRequired: "B" },
+ 
+IFA SALES reports (startDate "01/01/2006", endDate "31/12/2006"):
+  { name: "ANNUITY RATE EXTRACT", dateRequired: "",
+    path: "\\\\delphiuat\\uat\\cpa95\\reports\\extract report.rpt" }
+ 
+GENERAL reports (startDate "01/07/2009", endDate "15/07/2009"):
+  { name: "Telephone List", dateRequired: "",
+    path: "\\\\delphiuat\\uat\\pdoxdata\\telelist.rpt" }
+ 
+FINANCE reports (startDate "01/07/2011", endDate "31/07/2015"):
+  { name: "Annuity Payment - Details", dateRequired: "B",
+    path: "\\\\delphiuat\\uat\\accts\\reports\\AnnPay - Details(Exe).rpt" },
+  { name: "Annuity Payment - Summary", dateRequired: "B" },
+  { name: "Premium By Period",         dateRequired: "B" },
+  { name: "Seamus Report",             dateRequired: "B" },
+ 
+CHEQUE REQUISITION reports (startDate "01/04/2016", endDate "21/09/2026"):
+  { name: "CHEQUE REQUISITION LISTING", dateRequired: "",
+    path: "\\\\delphiuat\\uat\\pdoxdata\\hipps96\\reports\\" }
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. SYSTEM NAME CHANGE LOGIC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+When the user picks a new system name:
+  1. Reset selected row to 0.
+  2. Apply date defaults per system (see section 8 above).
+  3. Classification rules:
+ 
+  NOT_IN_ORACLE = { "CCRP", "MARKETING", "PLI ADMIN", "SALES95" }
+    → Clear Start/End dates to ""
+    → Show Warning popup: "System {name} is not present in ORACLE database!"
+    → Show EMPTY report list (no rows)
+ 
+  EMPTY_NO_WARNING = { "HIPPS97", "ILA REPORTS", "MORTGAGE ANNUIT(Admin)",
+                        "MORTGAGE ANNUIT(NB)", "PC96", "PROPSALE97" }
+    → Clear Start/End dates to ""
+    → Show EMPTY report list (no rows), no popup
+ 
+  All other systems → show their specific list + date defaults from section 8.
+  Default fallback (any system not explicitly mapped) → show DANAD96 report list.
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. POPUP DIALOGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+All popups: fixed inset-0 z-[70] flex items-center justify-center bg-black/40 p-6
+Panel: lve-panel bg-white w-[460px] max-w-full
+Header: lve-panel-header with title + close × button (hover red #d72714)
+Body: lve-panel-body flex flex-col gap-5
+ 
+[A] Print Error popup (triggered by Print button)
+  Header title: "{systemName} Reporting System"
+  Icon: MdError (24px) in a 40×40 rounded-full circle bg-[#d72714] text-white, shrink-0
+  Message (Mulish 14px #3d3d3d, pt-2):
+    "Error:200 Formula Name could not be found - Formulas.ByName."
+  OK button: lve-btn lve-btn-sm min-w-[100px] justify-center, MdCheck icon + "OK"
+  → dismisses popup
+ 
+[B] Warning popup (triggered by selecting a NOT_IN_ORACLE system)
+  Header title: "Warning"
+  Icon: MdWarning (24px) in a 40×40 rounded-full circle bg-[#f5a623] text-white, shrink-0
+  Message (Mulish 14px #3d3d3d, pt-2): "System {name} is not present in ORACLE database!"
+  OK button: lve-btn lve-btn-sm min-w-[100px] justify-center, MdCheck icon + "OK"
+  → dismisses popup
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. DEPENDENCIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  react, react-dom, react-icons, date-fns
+  vite, typescript, tailwindcss v4, @tailwindcss/vite
+  All as devDependencies (static Vite app).
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+12. FILE STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+src/
+  main.tsx
+  App.tsx                      ← page shell (Header + main + Footer)
+  index.css                    ← LVE tokens + utility classes
+  components/
+    Header.tsx
+    Footer.tsx
+    ReportingSystemPanel.tsx   ← main panel (sections 5–10)
+    SystemNameSelect.tsx       ← custom dropdown (section 6)
+    DatePicker.tsx             ← date picker (section 7)
+  data/
+    reports.ts                 ← all report lists + SYSTEM_NAMES constant
+ 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+13. ACCEPTANCE CRITERIA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Default state shows DANAD96 Reporting System with its 39 reports, first row selected.
+- Switching system name updates the header title, report list, and dates correctly.
+- NOT_IN_ORACLE systems show Warning popup and empty list.
+- EMPTY_NO_WARNING systems silently clear dates and show empty list.
+- Clicking Print always shows the Error:200 popup.
+- Selecting a row in the table highlights it blue (#006cf4) and shows its path in the footer input.
+- DatePicker allows picking start/end dates from a calendar popup.
+- All fonts, colours, radii, and spacing match the LVE design tokens exactly.
+- App is fully static, no API calls, no authentication.

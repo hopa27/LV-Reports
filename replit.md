@@ -1,6 +1,6 @@
-# [Project name]
+# LV= Reporting System
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A standalone, static single-page app that recreates the DANAD96 Reporting System screen from the LV= CLANAD legacy application, styled with the LVE Component Library design system. No backend — all data is hard-coded.
 
 ## Run & Operate
 

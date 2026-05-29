@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "LV= Reporting System"
+version = "1.0.0"
+id = "artifacts/lv-reporting"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21108
+
+[services.development]
+run = "pnpm --filter @workspace/lv-reporting run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/lv-reporting", "run", "build" ]
+publicDir = "artifacts/lv-reporting/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21108"
+BASE_PATH = "/"
