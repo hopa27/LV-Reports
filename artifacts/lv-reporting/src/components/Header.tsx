@@ -2,11 +2,11 @@ import lvLogo from "@assets/image_1780040378461.png";
 
 export default function Header({ title }: { title: string }) {
   return (
-    <header className="bg-[#00263e] text-white h-[52px] px-[142px] flex items-center justify-between shrink-0 pt-[20px] pb-[20px]">
+    <header className="bg-[#00263e] text-white px-[142px] py-5 flex items-center justify-between shrink-0">
       <div className="flex items-center gap-4">
-        <img src={lvLogo} alt="LV=" className="h-[28px] w-auto" />
+        <img src={lvLogo} alt="LV=" className="h-6 w-auto" />
         <span className="h-[20px] w-px bg-white/40" />
-        <span className="font-['Livvic'] text-[30px] font-normal">{title}</span>
+        <span className="font-['Livvic'] text-3xl font-normal">{title}</span>
       </div>
       <button
         type="button"
