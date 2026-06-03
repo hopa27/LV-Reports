@@ -51,52 +51,55 @@ export default function ReportingSystemPanel({
     <div className="lve-panel bg-white w-full flex flex-col">
       {/* [B] Panel body */}
       <div className="lve-panel-body flex flex-col gap-4">
-        {/* [B1] Top toolbar */}
-        <div className="flex flex-wrap items-end gap-4 sticky top-0 z-30 bg-white -mx-6 px-6 py-3 border-b border-slate-200">
-          <div className="w-[200px]">
-            <label className="lve-label">System Name</label>
-            <SystemNameSelect
-              value={systemName}
-              options={SYSTEM_NAMES}
-              onChange={handleSystemChange}
-            />
+        {/* [B1+B2] Sticky top area */}
+        <div className="sticky top-0 z-30 bg-white -mx-6 px-6 py-3 border-b border-slate-200 flex flex-col gap-4">
+          {/* Top toolbar */}
+          <div className="flex flex-wrap items-end gap-4">
+            <div className="w-[200px]">
+              <label className="lve-label">System Name</label>
+              <SystemNameSelect
+                value={systemName}
+                options={SYSTEM_NAMES}
+                onChange={handleSystemChange}
+              />
+            </div>
+            <div className="w-[200px]">
+              <label className="lve-label">Start Date</label>
+              <DatePicker
+                value={startDate}
+                placeholder="dd/MM/yyyy"
+                onChange={(d) => setStartDate(d ? format(d, "dd/MM/yyyy") : "")}
+              />
+            </div>
+            <div className="w-[200px]">
+              <label className="lve-label">End Date</label>
+              <DatePicker
+                value={endDate}
+                placeholder="dd/MM/yyyy"
+                onChange={(d) => setEndDate(d ? format(d, "dd/MM/yyyy") : "")}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowPrintError(true)}
+              className="lve-btn ml-auto"
+            >
+              <MdPrint size={18} />
+              Print
+            </button>
           </div>
-          <div className="w-[200px]">
-            <label className="lve-label">Start Date</label>
-            <DatePicker
-              value={startDate}
-              placeholder="dd/MM/yyyy"
-              onChange={(d) => setStartDate(d ? format(d, "dd/MM/yyyy") : "")}
-            />
-          </div>
-          <div className="w-[200px]">
-            <label className="lve-label">End Date</label>
-            <DatePicker
-              value={endDate}
-              placeholder="dd/MM/yyyy"
-              onChange={(d) => setEndDate(d ? format(d, "dd/MM/yyyy") : "")}
-            />
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowPrintError(true)}
-            className="lve-btn ml-auto"
-          >
-            <MdPrint size={18} />
-            Print
-          </button>
-        </div>
 
-        {/* [B2] Default printer checkbox */}
-        <label className="inline-flex items-center gap-2 font-['Mulish'] text-[14px] text-[#3d3d3d] cursor-pointer w-fit">
-          <input
-            type="checkbox"
-            checked={defaultPrinter}
-            onChange={(e) => setDefaultPrinter(e.target.checked)}
-            className="w-4 h-4 accent-[#006cf4]"
-          />
-          Print to my default printer
-        </label>
+          {/* Default printer checkbox */}
+          <label className="inline-flex items-center gap-2 font-['Mulish'] text-[14px] text-[#3d3d3d] cursor-pointer w-fit">
+            <input
+              type="checkbox"
+              checked={defaultPrinter}
+              onChange={(e) => setDefaultPrinter(e.target.checked)}
+              className="w-4 h-4 accent-[#006cf4]"
+            />
+            Print to my default printer
+          </label>
+        </div>
 
         {/* [B3] Reports table */}
         <div className="border-y-[3px] border-[#04589b] flex flex-col min-h-[340px]">
