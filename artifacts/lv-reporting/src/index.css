@@ -25,6 +25,7 @@
   body {
     @apply font-mulish bg-[#f0f0f0] text-[#3d3d3d] antialiased;
     margin: 0;
+    zoom: 0.8;
   }
 }
 
