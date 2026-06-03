@@ -48,7 +48,7 @@ export default function ReportingSystemPanel({
   const reportPath = selectedReport?.path ?? "";
 
   return (
-    <div className="lve-panel bg-white w-[1080px] max-w-full flex flex-col">
+    <div className="lve-panel bg-white w-full flex flex-col">
       {/* [B] Panel body */}
       <div className="lve-panel-body flex flex-col gap-4">
         {/* [B1] Top toolbar */}
