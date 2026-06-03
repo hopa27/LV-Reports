@@ -52,7 +52,7 @@ export default function ReportingSystemPanel({
       {/* [B] Panel body */}
       <div className="lve-panel-body flex flex-col gap-4">
         {/* [B1] Top toolbar */}
-        <div className="flex flex-wrap items-end gap-4">
+        <div className="flex flex-wrap items-end gap-4 sticky top-0 z-30 bg-white -mx-6 px-6 py-3 border-b border-slate-200">
           <div className="w-[200px]">
             <label className="lve-label">System Name</label>
             <SystemNameSelect
