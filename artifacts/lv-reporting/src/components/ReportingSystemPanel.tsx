@@ -126,7 +126,7 @@ export default function ReportingSystemPanel({
         </div>
 
         {/* [B4] Footer row */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sticky bottom-[58px] z-30 bg-white -mx-6 px-6 py-3 border-t border-slate-200">
           <input
             type="text"
             readOnly
