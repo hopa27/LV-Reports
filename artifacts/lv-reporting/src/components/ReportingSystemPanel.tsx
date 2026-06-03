@@ -103,7 +103,7 @@ export default function ReportingSystemPanel({
 
         {/* [B3] Reports table */}
         <div className="border-y-[3px] border-[#04589b] flex flex-col min-h-[340px]">
-          <div className="grid grid-cols-[1fr_160px] font-['Livvic'] font-semibold text-[18px] text-[#002f5c] border-b-[3px] border-[#04589b]">
+          <div className="grid grid-cols-[1fr_160px] font-['Livvic'] font-semibold text-[18px] text-[#002f5c] border-b-[3px] border-[#04589b] sticky top-[120px] z-20 bg-white">
             <div className="px-4 py-3">ReportName</div>
             <div className="px-4 py-3">DateRequired</div>
           </div>
