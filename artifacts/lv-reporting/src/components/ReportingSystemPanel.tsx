@@ -48,11 +48,11 @@ export default function ReportingSystemPanel({
   const reportPath = selectedReport?.path ?? "";
 
   return (
-    <div className="lve-panel bg-white w-full flex flex-col">
+    <div className="lve-panel bg-white w-full flex flex-col h-full min-h-0 overflow-hidden">
       {/* [B] Panel body */}
-      <div className="lve-panel-body flex flex-col gap-4">
-        {/* [B1+B2] Sticky top area */}
-        <div className="sticky top-0 z-30 bg-white -mx-6 px-6 py-3 border-b border-slate-200 flex flex-col gap-4">
+      <div className="lve-panel-body flex flex-col gap-4 flex-1 min-h-0">
+        {/* [B1+B2] Top area */}
+        <div className="shrink-0 bg-white -mx-6 px-6 py-3 border-b border-slate-200 flex flex-col gap-4">
           {/* Top toolbar */}
           <div className="flex flex-wrap items-end gap-4">
             <div className="w-[200px]">
@@ -102,12 +102,12 @@ export default function ReportingSystemPanel({
         </div>
 
         {/* [B3] Reports table */}
-        <div className="border-y-[3px] border-[#04589b] flex flex-col min-h-[340px]">
-          <div className="grid grid-cols-[1fr_160px] font-['Livvic'] font-semibold text-[18px] text-[#002f5c] border-b-[3px] border-[#04589b] sticky top-[120px] z-20 bg-white">
+        <div className="border-y-[3px] border-[#04589b] flex flex-col flex-1 min-h-0">
+          <div className="grid grid-cols-[1fr_160px] font-['Livvic'] font-semibold text-[18px] text-[#002f5c] border-b-[3px] border-[#04589b] shrink-0 bg-white">
             <div className="px-4 py-3">ReportName</div>
             <div className="px-4 py-3">DateRequired</div>
           </div>
-          <div className="overflow-auto lve-scroll font-['Mulish'] font-light text-[16px] text-[#3d3d3d]">
+          <div className="flex-1 min-h-0 overflow-auto lve-scroll font-['Mulish'] font-light text-[16px] text-[#3d3d3d]">
             {reports.map((report, idx) => {
               const isSelected = idx === selectedRow;
               return (
@@ -129,7 +129,7 @@ export default function ReportingSystemPanel({
         </div>
 
         {/* [B4] Footer row */}
-        <div className="flex items-center gap-2 sticky bottom-[58px] z-30 bg-white -mx-6 px-6 py-3 border-t border-slate-200">
+        <div className="flex items-center gap-2 shrink-0 bg-white -mx-6 px-6 py-3 border-t border-slate-200">
           <input
             type="text"
             readOnly

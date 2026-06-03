@@ -8,9 +8,9 @@ function App() {
   const [systemName, setSystemName] = useState<string>(DEFAULT_SYSTEM);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f0f0f0]">
+    <div className="h-[125vh] overflow-hidden flex flex-col bg-[#f0f0f0]">
       <Header title={`${systemName} Reporting System`} />
-      <main className="flex-1 px-[142px] py-8 flex items-start justify-center">
+      <main className="flex-1 min-h-0 px-[142px] py-8 flex items-stretch justify-center">
         <ReportingSystemPanel
           systemName={systemName}
           onSystemNameChange={setSystemName}
