@@ -8,13 +8,13 @@ export default function Header({ title }: { title: string }) {
         <span className="h-[20px] w-px bg-white/40" />
         <span className="font-['Livvic'] text-[30px] font-normal">{title}</span>
       </div>
-      <a
-        href="#"
+      <button
+        type="button"
         onClick={(e) => e.preventDefault()}
-        className="font-['Livvic'] text-[14px] text-white hover:underline"
+        className="font-['Livvic'] text-[14px] text-white h-8 px-4 rounded-md hover:bg-white/10 transition-colors cursor-pointer"
       >
         Logout
-      </a>
+      </button>
     </header>
   );
 }

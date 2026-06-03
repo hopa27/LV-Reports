@@ -12,7 +12,7 @@ import {
   isSameDay,
   isSameMonth,
 } from "date-fns";
-import { MdKeyboardArrowDown, MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { MdOutlineCalendarToday, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 interface DatePickerProps {
   value: string;
@@ -72,51 +72,51 @@ export default function DatePicker({ value, placeholder, disabled, onChange }: D
         onClick={() => !disabled && setOpen((o) => !o)}
         className={`lve-input pr-12 text-left flex items-center ${
           disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-        }`}
+        } ${open && !disabled ? "border-[2px] border-[#178830]" : ""}`}
       >
-        <span className={`truncate ${value ? "text-[#3d3d3d]" : "text-[#9a9a9a]"}`}>
+        <span className={`truncate ${value ? "text-[#3d3d3d]" : "text-[#BBBBBB]"}`}>
           {value || placeholder || ""}
         </span>
         <span className="pointer-events-none absolute right-0 top-0 h-full flex items-center">
           <span className="h-[20px] w-px bg-[#BBBBBB]" />
-          <MdKeyboardArrowDown size={22} className="text-[#006cf4] mx-1.5" />
+          <MdOutlineCalendarToday size={18} className="text-[#006cf4] mx-2.5" />
         </span>
       </button>
 
       {open && !disabled && (
-        <div className="absolute left-0 top-full mt-1 z-30 w-[260px] bg-white border border-[#BBBBBB] rounded-[8px] shadow-lg p-3">
-          <div className="flex items-center justify-between mb-2">
+        <div className="absolute left-0 top-full mt-1 z-30 w-[280px] bg-white border-[2px] border-[#178830] rounded-[12px] overflow-hidden shadow-lg">
+          <div className="flex items-center justify-between px-3 py-2">
             <button
               type="button"
               onClick={() => setViewMonth((m) => addMonths(m, -1))}
-              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-[#eaf5f8] text-[#006cf4] cursor-pointer"
+              className="w-7 h-7 flex items-center justify-center rounded-full text-[#005a9c] hover:text-[#003578] cursor-pointer"
             >
               <MdChevronLeft size={20} />
             </button>
-            <span className="font-['Livvic'] font-semibold text-[14px] text-[#0d2c41]">
+            <span className="font-['Livvic'] font-bold text-[16px] text-[#005a9c]">
               {format(viewMonth, "MMMM yyyy")}
             </span>
             <button
               type="button"
               onClick={() => setViewMonth((m) => addMonths(m, 1))}
-              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-[#eaf5f8] text-[#006cf4] cursor-pointer"
+              className="w-7 h-7 flex items-center justify-center rounded-full text-[#005a9c] hover:text-[#003578] cursor-pointer"
             >
               <MdChevronRight size={20} />
             </button>
           </div>
 
-          <div className="grid grid-cols-7 gap-y-1 mb-1">
+          <div className="grid grid-cols-7 bg-[#eef4f8]">
             {WEEKDAYS.map((d) => (
               <div
                 key={d}
-                className="text-center font-['Livvic'] font-semibold text-[11px] text-[#0d2c41]"
+                className="text-center font-['Livvic'] font-semibold text-[12px] text-[#002f5c] py-1.5"
               >
                 {d}
               </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-y-1">
+          <div className="grid grid-cols-7 gap-y-1 p-2">
             {days.map((d) => {
               const isSelected = selected && isSameDay(d, selected);
               const isToday = isSameDay(d, today);
@@ -129,10 +129,15 @@ export default function DatePicker({ value, placeholder, disabled, onChange }: D
                     onChange(d);
                     setOpen(false);
                   }}
-                  className={`mx-auto w-8 h-8 flex items-center justify-center text-[13px] font-['Mulish'] cursor-pointer rounded-full
-                    ${isSelected ? "bg-[#006cf4] text-white" : isToday ? "border border-[#006cf4]" : "hover:bg-[#eaf5f8]"}
-                    ${!inMonth && !isSelected ? "text-[#bbbbbb]" : "text-[#3d3d3d]"}
-                    ${isSelected ? "text-white" : ""}
+                  className={`mx-auto w-9 h-9 flex items-center justify-center text-[14px] font-['Mulish'] cursor-pointer rounded-full
+                    ${
+                      isSelected
+                        ? "bg-[#006cf4] text-white hover:bg-[#003578]"
+                        : isToday
+                          ? "text-[#006cf4] font-semibold hover:bg-[#003578] hover:text-white"
+                          : "text-[#3d3d3d] hover:bg-[#003578] hover:text-white"
+                    }
+                    ${!inMonth && !isSelected ? "lve-hatch opacity-50" : ""}
                   `}
                 >
                   {d.getDate()}

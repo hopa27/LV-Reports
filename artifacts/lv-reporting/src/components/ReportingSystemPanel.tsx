@@ -80,9 +80,9 @@ export default function ReportingSystemPanel({
           <button
             type="button"
             onClick={() => setShowPrintError(true)}
-            className="lve-btn lve-btn-sm ml-auto"
+            className="lve-btn ml-auto"
           >
-            <MdPrint size={16} />
+            <MdPrint size={18} />
             Print
           </button>
         </div>
@@ -99,32 +99,26 @@ export default function ReportingSystemPanel({
         </label>
 
         {/* [B3] Reports table */}
-        <div className="border border-[#BBBBBB] rounded-[8px] overflow-hidden flex flex-col min-h-[340px]">
-          <div className="grid grid-cols-[1fr_160px] bg-[#eaf5f8] font-['Livvic'] font-semibold text-[13px] text-[#0d2c41] border-b border-[#BBBBBB]">
-            <div className="px-4 py-2 border-r border-[#BBBBBB]">ReportName</div>
-            <div className="px-4 py-2">DateRequired</div>
+        <div className="border-y-[3px] border-[#04589b] flex flex-col min-h-[340px]">
+          <div className="grid grid-cols-[1fr_160px] font-['Livvic'] font-semibold text-[18px] text-[#002f5c] border-b-[3px] border-[#04589b]">
+            <div className="px-4 py-3">ReportName</div>
+            <div className="px-4 py-3">DateRequired</div>
           </div>
-          <div className="overflow-auto font-['Mulish'] text-[14px] text-[#3d3d3d]">
+          <div className="overflow-auto lve-scroll font-['Mulish'] font-light text-[16px] text-[#3d3d3d]">
             {reports.map((report, idx) => {
               const isSelected = idx === selectedRow;
               return (
                 <div
                   key={`${report.name}-${idx}`}
                   onClick={() => setSelectedRow(idx)}
-                  className={`grid grid-cols-[1fr_160px] cursor-pointer border-b border-[#e3e6ea] ${
+                  className={`grid grid-cols-[1fr_160px] cursor-pointer ${
                     isSelected
                       ? "bg-[#006cf4] text-white"
-                      : "hover:bg-[#eaf5f8]"
+                      : `${idx % 2 === 1 ? "bg-[#e7ebec34]" : ""} hover:bg-[#05579B] hover:text-white`
                   }`}
                 >
-                  <div
-                    className={`px-4 py-1.5 border-r ${
-                      isSelected ? "border-[#003578]" : "border-[#e3e6ea]"
-                    }`}
-                  >
-                    {report.name}
-                  </div>
-                  <div className="px-4 py-1.5">{report.dateRequired}</div>
+                  <div className="px-4 py-2">{report.name}</div>
+                  <div className="px-4 py-2">{report.dateRequired}</div>
                 </div>
               );
             })}
@@ -142,7 +136,7 @@ export default function ReportingSystemPanel({
           <button
             type="button"
             disabled
-            className="lve-btn lve-btn-secondary lve-btn-sm opacity-40 cursor-not-allowed"
+            className="lve-btn lve-btn-secondary"
           >
             <MdSearch size={16} />
             Find
@@ -176,7 +170,7 @@ export default function ReportingSystemPanel({
               <button
                 type="button"
                 onClick={() => setShowPrintError(false)}
-                className="lve-btn lve-btn-sm min-w-[100px] justify-center self-end"
+                className="lve-btn min-w-[100px] justify-center self-end"
               >
                 <MdCheck size={16} />
                 OK
@@ -212,7 +206,7 @@ export default function ReportingSystemPanel({
               <button
                 type="button"
                 onClick={() => setWarning({ open: false, name: "" })}
-                className="lve-btn lve-btn-sm min-w-[100px] justify-center self-end"
+                className="lve-btn min-w-[100px] justify-center self-end"
               >
                 <MdCheck size={16} />
                 OK

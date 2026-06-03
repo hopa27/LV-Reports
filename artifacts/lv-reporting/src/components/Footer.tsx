@@ -2,11 +2,12 @@ import lvLogo from "@assets/image_1780040378461.png";
 
 export default function Footer() {
   return (
-    <footer className="bg-white h-[44px] px-[142px] flex items-center gap-3 mt-auto border-t border-[#e3e6ea] shrink-0">
-      <img src={lvLogo} alt="LV=" className="h-[22px] w-auto" />
-      <span className="font-['Mulish'] text-[13px] text-[#3d3d3d]">
-        County Gates, Bournemouth, BH1 2NF
-      </span>
+    <footer className="bg-white px-[142px] py-4 flex items-center justify-between mt-auto border-t border-slate-200 shrink-0">
+      <img src={lvLogo} alt="LV=" className="h-6 w-auto" />
+      <div className="text-right font-['Mulish'] text-[10px] font-medium text-slate-400 leading-tight">
+        <div>County Gates, Bournemouth</div>
+        <div>BH1 2NF</div>
+      </div>
     </footer>
   );
 }

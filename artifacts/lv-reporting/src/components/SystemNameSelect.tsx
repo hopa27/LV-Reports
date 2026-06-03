@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowDown, MdCheck } from "react-icons/md";
 
 interface SystemNameSelectProps {
   value: string;
@@ -27,17 +27,22 @@ export default function SystemNameSelect({ value, options, onChange }: SystemNam
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="lve-input pr-12 text-left flex items-center cursor-pointer"
+        className={`lve-input pr-12 text-left flex items-center cursor-pointer ${
+          open ? "border-[3px] border-[#178830] border-b-0 rounded-b-none px-[10px]" : ""
+        }`}
       >
         <span className="truncate">{value}</span>
         <span className="pointer-events-none absolute right-0 top-0 h-full flex items-center">
           <span className="h-[20px] w-px bg-[#BBBBBB]" />
-          <MdKeyboardArrowDown size={22} className="text-[#006cf4] mx-1.5" />
+          <MdKeyboardArrowDown
+            size={22}
+            className={`text-[#006cf4] mx-1.5 transition-transform ${open ? "rotate-180" : ""}`}
+          />
         </span>
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full mt-1 z-30 w-full max-h-[180px] overflow-auto bg-white border border-[#BBBBBB] rounded-[8px] shadow-lg font-['Mulish'] text-[14px] text-[#3d3d3d]">
+        <div className="lve-scroll absolute left-0 top-full z-30 w-full max-h-[200px] overflow-auto bg-white border-[3px] border-t-0 border-[#178830] rounded-b-[8px] shadow-lg font-['Mulish'] text-[16px] text-[#3d3d3d]">
           {options.map((opt) => {
             const isSelected = opt === value;
             return (
@@ -47,11 +52,14 @@ export default function SystemNameSelect({ value, options, onChange }: SystemNam
                   onChange(opt);
                   setOpen(false);
                 }}
-                className={`px-3 py-1.5 cursor-pointer ${
-                  isSelected ? "bg-[#006cf4] text-white" : "hover:bg-[#eaf5f8]"
+                className={`flex items-center justify-between gap-2 px-3 py-3 cursor-pointer ${
+                  isSelected
+                    ? "bg-[#05579B] text-white"
+                    : "hover:bg-[#05579B] hover:text-white"
                 }`}
               >
-                {opt}
+                <span className="truncate">{opt}</span>
+                {isSelected && <MdCheck size={18} className="shrink-0" />}
               </div>
             );
           })}
